@@ -4,8 +4,8 @@ import { DefaultSession } from 'next-auth';
 declare module 'next-auth' {
 	interface Session {
 		user: {
-			accessToken: string;
-			branchToken: string;
+			access_token: string;
+			branch_token: string;
 			profile: User;
 			roles: sting[];
 			permissions: string[];

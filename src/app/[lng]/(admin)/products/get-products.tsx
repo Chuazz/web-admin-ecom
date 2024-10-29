@@ -4,28 +4,22 @@ import { routes } from '@configs/routes';
 import { queryOptions } from '@tanstack/react-query';
 import { Product } from '@type/data';
 
-const getProducts = async ({ page = 1, limit = 20 }) => {
+const getProducts = async (params: Record<string, string | number>) => {
 	const response = await clientRequest<Product[]>({
 		api: routes.products,
 		options: {
-			params: {
-				page,
-				limit,
-			},
+			params,
 		},
 	});
 
 	return response;
 };
 
-const getProductsOptions = ({ page = 1, limit = 20 }) =>
+const getProductsOptions = (params: Record<string, string | number>) =>
 	queryOptions({
-		queryKey: queryKey.products.list({
-			page,
-			limit,
-		}),
+		queryKey: queryKey.products.list(params),
 		queryFn: () => {
-			return getProducts({ page, limit });
+			return getProducts(params);
 		},
 	});
 

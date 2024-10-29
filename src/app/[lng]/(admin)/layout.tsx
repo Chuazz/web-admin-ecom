@@ -6,10 +6,10 @@ const AdminLayout = ({ children }: Layout) => {
 		<div className='flex'>
 			<SideBar />
 
-			<div className='flex-1 h-screen overflow-auto'>
+			<div className='h-screen flex-1 overflow-auto bg-slate-50'>
 				<Header />
 
-				{children}
+				<div className='p-4'>{children}</div>
 			</div>
 		</div>
 	);

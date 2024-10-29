@@ -1,3 +1,10 @@
 {
-	"product": "Sản phẩm"
+	"product": "Sản phẩm",
+
+	"fields": {
+		"product": {
+			"name": "Tên sản phẩm",
+			"price": "Đơn giá"
+		}
+	}
 }

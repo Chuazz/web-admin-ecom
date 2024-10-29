@@ -1,3 +1,8 @@
 {
-	"list": "Danh sách"
+	"list": "Danh sách",
+	"page": "Trang",
+	"go_to_page": "Tới trang",
+	"show": "Hiển thị",
+	"on": "Trên",
+	"search": "Tìm kiếm"
 }

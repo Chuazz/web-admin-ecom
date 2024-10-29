@@ -32,13 +32,13 @@ const useLogin = () => {
 		async onSuccess(response) {
 			await signIn('credentials', {
 				redirect: false,
-				accessToken: response?.data?.access_token,
+				access_token: response?.data?.access_token,
 			});
 
 			const branch = await selectBranchMutate.mutateAsync();
 
 			await update({
-				branchToken: branch?.data?.branch_token,
+				branch_token: branch?.data?.branch_token,
 				profile: branch?.data?.user,
 				roles: branch?.data?.roles,
 				permissions: branch?.data?.permissions,

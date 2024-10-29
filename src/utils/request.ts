@@ -35,7 +35,7 @@ const request = async <T>({ api, options: _options, session }: Request) => {
 			credentials: 'include',
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
-			Authorization: 'Bearer ' + session?.user.accessToken,
+			Authorization: 'Bearer ' + session?.user.access_token,
 		},
 	};
 

@@ -37,8 +37,8 @@ const LoginPage = ({ searchParams }: Page) => {
 	};
 
 	return (
-		<div className='flex justify-center items-center bg-slate-100 min-h-screen'>
-			<div className='bg-white rounded-lg w-96 shadow-lg overflow-hidden relative'>
+		<div className='flex min-h-screen items-center justify-center bg-slate-100'>
+			<div className='relative w-96 overflow-hidden rounded-lg bg-white shadow-lg'>
 				<Loading show={loginMutate.isPending} />
 
 				<div className='h-[3px] bg-blue-500' />
@@ -102,7 +102,7 @@ const LoginPage = ({ searchParams }: Page) => {
 
 					<Link
 						type='update'
-						className='text-blue-500 font-medium'
+						className='font-medium text-blue-500'
 						replace={true}
 						params={{
 							method: loginWithPhoneNumber ? 'email' : 'phone_number',
@@ -115,8 +115,8 @@ const LoginPage = ({ searchParams }: Page) => {
 
 					<Button
 						className={clsx(
-							'text-center bg-blue-500 rounded-md w-full py-2 text-white mt-6',
-							'hover:bg-blue-600 cursor-pointer',
+							'mt-6 w-full rounded-md bg-blue-500 py-2 text-center text-white',
+							'cursor-pointer hover:bg-blue-600',
 						)}
 						onClick={handleSubmit(onSubmit)}
 					>

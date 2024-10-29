@@ -1,5 +1,9 @@
+'use client';
+
 import { Description, Field, Input, Label } from '@headlessui/react';
 import clsx from 'clsx';
+import { FormEvent, useCallback } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 
 type InputTextProps = {
 	label?: string;
@@ -7,31 +11,57 @@ type InputTextProps = {
 	value?: string;
 	message?: string;
 	password?: boolean;
+	debounce?: boolean;
 	onChange?: (value: string) => void;
 };
 
-const InputText = ({ label, placeholder, value, password, message, onChange }: InputTextProps) => {
+const InputText = ({
+	label,
+	placeholder,
+	value,
+	password,
+	message,
+	debounce,
+	onChange,
+}: InputTextProps) => {
+	const handleOnChange = useCallback(
+		(e: FormEvent<HTMLInputElement>) => {
+			const target = e.target as HTMLInputElement;
+
+			onChange?.(target.value);
+		},
+		[onChange],
+	);
+
+	const debounceOnChange = useDebouncedCallback((e: FormEvent<HTMLInputElement>) => {
+		handleOnChange(e);
+	}, 600);
+
 	return (
 		<Field>
-			{label && <Label className='text-sm/6 font-medium'>{label}</Label>}
+			{label && <Label className='font-medium'>{label}</Label>}
 
 			<Input
 				placeholder={placeholder}
 				value={value}
 				type={password ? 'password' : 'text'}
-				onInput={(e) => {
-					const target = e.target as HTMLInputElement;
-
-					onChange?.(target.value);
-				}}
 				className={clsx(
-					'mt-1 block w-full rounded-md border border-gray-300 py-1.5 px-3 text-sm/6',
+					'mt-1 block w-full rounded-md border border-gray-300 px-3 py-1.5',
 					'focus:outline-none data-[focus]:outline-1 data-[focus]:-outline-offset-2 data-[focus]:outline-black/25',
 				)}
+				onChange={(e) => {
+					if (debounce) {
+						debounceOnChange(e);
+
+						return;
+					}
+
+					handleOnChange(e);
+				}}
 			/>
 
 			{message && (
-				<Description className='text-xs mt-1 font-semibold text-red-400'>{message}</Description>
+				<Description className='mt-1 text-xs font-semibold text-red-400'>{message}</Description>
 			)}
 		</Field>
 	);

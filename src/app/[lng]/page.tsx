@@ -10,9 +10,9 @@ const RootPage = () => {
 	const { data } = useSession();
 
 	return (
-		<div className='h-screen flex items-center justify-center gap-4'>
+		<div className='flex h-screen items-center justify-center gap-4'>
 			<Button
-				className={clsx('bg-blue-500 rounded-md py-2 px-3 text-white cursor-pointer')}
+				className={clsx('cursor-pointer rounded-md bg-blue-500 px-3 py-2 text-white')}
 				onClick={() => {
 					signOut();
 				}}
@@ -21,7 +21,7 @@ const RootPage = () => {
 			</Button>
 
 			<Button
-				className={clsx('bg-blue-500 rounded-md py-2 px-3 text-white cursor-pointer')}
+				className={clsx('cursor-pointer rounded-md bg-blue-500 px-3 py-2 text-white')}
 				onClick={() => {
 					console.log(data);
 				}}
@@ -33,7 +33,7 @@ const RootPage = () => {
 				href={routes.products}
 				type='redirect'
 			>
-				<Button className={clsx('bg-blue-500 rounded-md py-2 px-3 text-white cursor-pointer')}>
+				<Button className={clsx('cursor-pointer rounded-md bg-blue-500 px-3 py-2 text-white')}>
 					Go to products
 				</Button>
 			</Link>

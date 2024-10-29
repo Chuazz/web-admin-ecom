@@ -1,6 +1,8 @@
 {
 	"extends": ["next/core-web-vitals", "next/typescript", "plugin:@tanstack/query/recommended"],
 	"rules": {
+		"jsx-a11y/alt-text": 0,
+		"@typescript-eslint/no-explicit-any": "off",
 		"@typescript-eslint/no-unused-vars": [
 			"error",
 			{
@@ -12,7 +14,6 @@
 				"varsIgnorePattern": "^_",
 				"ignoreRestSiblings": true
 			}
-		],
-		"jsx-a11y/alt-text": 0
+		]
 	}
 }

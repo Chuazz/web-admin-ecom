@@ -1,94 +1,71 @@
 'use client';
 
-import { Paginate } from '@components/ui';
+import { useSearchParams } from '@/src/hooks';
+import { Card, Loading, Paginate, Table } from '@components/ui';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import {
-	createColumnHelper,
-	flexRender,
-	getCoreRowModel,
-	useReactTable,
-} from '@tanstack/react-table';
-import { Product } from '@type/data';
-import { useSearchParams } from 'next/navigation';
-import { useMemo } from 'react';
 import { getProductsOptions } from './get-products';
-
-const columnHelper = createColumnHelper<Product>();
-
-const columns = [
-	columnHelper.accessor((row) => row.name, {
-		id: 'name',
-		cell: (info) => <i>{info.getValue()}</i>,
-		header: () => <span>Tên sản phẩm</span>,
-	}),
-	columnHelper.accessor((row) => row.price, {
-		id: 'price',
-		cell: (info) => <i>{info.getValue()}</i>,
-		header: () => <span>Đơn giá</span>,
-	}),
-];
+import { InputText } from '@components/form';
+import { translation } from '@configs/i18n';
 
 const ProductList = () => {
-	const searchParams = useSearchParams();
-	const page = useMemo(() => Number(searchParams.get('page')) || 1, [searchParams]);
-	const limit = useMemo(() => Number(searchParams.get('limit')) || 5, [searchParams]);
+	const t = translation();
+
+	const { page, limit, keyword, update } = useSearchParams({
+		page: '1',
+		limit: '5',
+		keyword: '',
+	});
 
 	const productsQuery = useSuspenseQuery(
 		getProductsOptions({
-			limit,
+			keyword,
 			page,
+			limit,
 		}),
 	);
 
-	const table = useReactTable({
-		data: productsQuery.data?.data || [],
-		columns,
-		getCoreRowModel: getCoreRowModel(),
-	});
-
 	return (
-		<div>
-			<table
-				className='border border-collapse w-full'
-				cellPadding={12}
-			>
-				<thead>
-					{table.getHeaderGroups().map((headerGroup) => (
-						<tr key={headerGroup.id}>
-							{headerGroup.headers.map((header) => (
-								<th
-									key={header.id}
-									className='border'
-								>
-									{header.isPlaceholder
-										? null
-										: flexRender(header.column.columnDef.header, header.getContext())}
-								</th>
-							))}
-						</tr>
-					))}
-				</thead>
+		<Card className='relative'>
+			<Loading show={productsQuery.isFetching} />
 
-				<tbody>
-					{table.getRowModel().rows.map((row) => (
-						<tr key={row.id}>
-							{row.getVisibleCells().map((cell) => (
-								<td
-									key={cell.id}
-									className='border'
-								>
-									{flexRender(cell.column.columnDef.cell, cell.getContext())}
-								</td>
-							))}
-						</tr>
-					))}
-				</tbody>
-			</table>
+			<Card.Header>
+				<InputText
+					label={t('common:search')}
+					debounce={true}
+					onChange={(value) => {
+						update({
+							name: 'keyword',
+							value,
+							action: 'replace',
+						});
+					}}
+				/>
+			</Card.Header>
 
-			<Paginate totalPage={productsQuery.data?.meta?.total_page || 1} />
+			<Card.Body>
+				<Table
+					items={productsQuery.data?.data || []}
+					module='product'
+					fields={[
+						{
+							key: 'name',
+						},
+						{
+							key: 'price',
+							cellClassName: 'text-right',
+						},
+						{
+							key: 'extra.sold_qty',
+							cellClassName: 'text-right',
+						},
+					]}
+				/>
+			</Card.Body>
 
-			{productsQuery.isFetching ? 'Loading...' : null}
-		</div>
+			<Card.Footer>
+				<Paginate totalPage={productsQuery.data?.meta?.total_page || 1} />
+			</Card.Footer>
+		</Card>
 	);
 };
 

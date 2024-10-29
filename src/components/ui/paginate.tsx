@@ -1,27 +1,28 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-import { useMemo } from 'react';
+import { useSearchParams } from '@/src/hooks';
 import { Link } from './link';
-import { useUpdateSearchParams } from '@/src/hooks';
+import { translation } from '@configs/i18n';
 
 type Paginate = {
 	totalPage: number;
 };
 
 const Paginate = ({ totalPage }: Paginate) => {
-	const searchParams = useSearchParams();
-	const page = useMemo(() => Number(searchParams.get('page')) || 1, [searchParams]);
-	const limit = useMemo(() => Number(searchParams.get('limit')) || 5, [searchParams]);
-	const { updateSearchParams } = useUpdateSearchParams();
+	const t = translation();
+
+	const { update, page, limit } = useSearchParams({
+		page: '1',
+		limit: '5',
+	});
 
 	return (
-		<div className='flex items-center justify-end mt-3 gap-4'>
+		<div className='flex items-center justify-end gap-4'>
 			<Link
 				type='update'
-				className='border rounded py-1 px-2'
+				className='rounded border bg-white px-2 py-1'
 				params={{
-					page: page - 1,
+					page: Number(page) - 1,
 				}}
 			>
 				{'<'}
@@ -29,26 +30,27 @@ const Paginate = ({ totalPage }: Paginate) => {
 
 			<Link
 				type='update'
-				className='border rounded py-1 px-2'
+				className='rounded border bg-white px-2 py-1'
 				params={{
-					page: page + 1,
+					page: Number(page) + 1,
 				}}
 			>
 				{'>'}
 			</Link>
 
 			<span className='flex items-center gap-1'>
-				<div>Page</div>
+				<p>{t('common:page')}</p>
 
 				<strong>
-					{page} of {totalPage}
+					{page} {t('common:on').toLowerCase()} {totalPage}
 				</strong>
 			</span>
 
 			<div>|</div>
 
 			<span className='flex items-center gap-1'>
-				Go to page:
+				<p>{t('common:go_to_page')}:</p>
+
 				<input
 					type='number'
 					min='1'
@@ -57,15 +59,23 @@ const Paginate = ({ totalPage }: Paginate) => {
 					onBlur={(e) => {
 						const page = e.target.value ? Number(e.target.value) : 1;
 
-						updateSearchParams('page', page);
+						update({
+							name: 'page',
+							value: page,
+						});
 					}}
-					className='border p-1 rounded w-16'
+					className='w-16 rounded border bg-white p-1'
 				/>
 			</span>
+
 			<select
 				value={limit}
+				className='cursor-pointer rounded border bg-white p-1'
 				onChange={(e) => {
-					updateSearchParams('limit', e.target.value);
+					update({
+						name: 'limit',
+						value: e.target.value,
+					});
 				}}
 			>
 				{[5, 10, 20, 30, 40, 50].map((pageSize) => (
@@ -73,7 +83,7 @@ const Paginate = ({ totalPage }: Paginate) => {
 						key={pageSize}
 						value={pageSize}
 					>
-						Show {pageSize}
+						{t('common:show')} {pageSize}
 					</option>
 				))}
 			</select>

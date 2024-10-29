@@ -12,6 +12,8 @@
 		"placehold",
 		"tailwindcss",
 		"tanstack",
+		"uidotdev",
+		"usehooks",
 		"vcos"
 	]
 }
