@@ -1,10 +1,8 @@
 import { auth } from '@/auth';
 import { env } from '@configs/env';
-import { statusCode } from '@configs/request';
 import { isServer } from '@tanstack/react-query';
 import { Response } from '@type/request';
 import { Session } from 'next-auth';
-import { signOut } from 'next-auth/react';
 import { NextRequest } from 'next/server';
 import { stringify } from 'querystring';
 import toast from 'react-hot-toast';
@@ -109,14 +107,12 @@ const clientRequest = async <T = unknown>(props: ClientRequest): Promise<Respons
 		api: url,
 	});
 
-	if (result.response.status === statusCode.unauthorized) {
-		toast.error('Login to continue');
+	if (!result.response.ok && result?.data?.message) {
+		toast.error(result.data.message);
 
-		await signOut({
-			redirect: true,
-		});
-
-		return null;
+		// await signOut({
+		// 	redirect: true,
+		// });
 	}
 
 	return result.data;

@@ -1,44 +1,43 @@
 'use client';
 
-import { useSearchParams } from '@/src/hooks';
-import { Card, Loading, Paginate, Table } from '@components/ui';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { getProductsOptions } from './get-products';
 import { InputText } from '@components/form';
+import { Button, Card, Loading, Paginate, Table } from '@components/ui';
 import { translation } from '@configs/i18n';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { getProductsOptions } from './get-products';
+import { PlusIcon } from '@heroicons/react/24/solid';
 
 const ProductList = () => {
 	const t = translation();
-
-	const { page, limit, keyword, update } = useSearchParams({
-		page: '1',
-		limit: '5',
+	const [queryParams, setQueryParams] = useState({
 		keyword: '',
+		page: 1,
+		limit: 5,
 	});
 
-	const productsQuery = useSuspenseQuery(
-		getProductsOptions({
-			keyword,
-			page,
-			limit,
-		}),
-	);
+	const productsQuery = useQuery(getProductsOptions(queryParams));
 
 	return (
 		<Card className='relative'>
-			<Loading show={productsQuery.isFetching} />
+			<Loading show={productsQuery.isFetching || productsQuery.isLoading} />
 
-			<Card.Header>
+			<Card.Header className='flex items-center justify-between'>
 				<InputText
 					label={t('common:search')}
 					debounce={true}
 					onChange={(value) => {
-						update({
-							name: 'keyword',
-							value,
-							action: 'replace',
-						});
+						setQueryParams((prev) => ({
+							...prev,
+							page: 1,
+							keyword: value,
+						}));
 					}}
+				/>
+
+				<Button
+					leftIcon={PlusIcon}
+					content='Thêm mới'
 				/>
 			</Card.Header>
 
@@ -63,7 +62,23 @@ const ProductList = () => {
 			</Card.Body>
 
 			<Card.Footer>
-				<Paginate totalPage={productsQuery.data?.meta?.total_page || 1} />
+				<Paginate
+					limit={queryParams.limit}
+					page={queryParams.page}
+					totalPage={productsQuery.data?.meta?.total_page}
+					onLimitChange={(value) => {
+						setQueryParams((prev) => ({
+							...prev,
+							limit: value,
+						}));
+					}}
+					onPageChange={(value) => {
+						setQueryParams((prev) => ({
+							...prev,
+							page: value,
+						}));
+					}}
+				/>
 			</Card.Footer>
 		</Card>
 	);

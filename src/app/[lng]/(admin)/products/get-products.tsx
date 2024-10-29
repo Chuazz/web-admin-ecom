@@ -1,7 +1,7 @@
 import { clientRequest } from '@/src/utils';
 import { queryKey } from '@configs/query-key';
 import { routes } from '@configs/routes';
-import { queryOptions } from '@tanstack/react-query';
+import { keepPreviousData, queryOptions } from '@tanstack/react-query';
 import { Product } from '@type/data';
 
 const getProducts = async (params: Record<string, string | number>) => {
@@ -18,6 +18,7 @@ const getProducts = async (params: Record<string, string | number>) => {
 const getProductsOptions = (params: Record<string, string | number>) =>
 	queryOptions({
 		queryKey: queryKey.products.list(params),
+		placeholderData: keepPreviousData,
 		queryFn: () => {
 			return getProducts(params);
 		},

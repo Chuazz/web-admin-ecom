@@ -4,3 +4,4 @@ export * from './loading';
 export * from './image';
 export * from './card';
 export * from './table';
+export * from './button';

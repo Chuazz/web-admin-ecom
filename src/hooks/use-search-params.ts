@@ -3,11 +3,11 @@ import { useMemo } from 'react';
 
 type UpdateSearchParams<T> = {
 	name: keyof T;
-	value: string | number;
+	value: string;
 	action?: 'replace' | 'push';
 };
 
-const useSearchParams = <T>(defaultValue: T) => {
+const useSearchParams = <T>(defaultValue: T = {} as T) => {
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useNextSearchParams();
