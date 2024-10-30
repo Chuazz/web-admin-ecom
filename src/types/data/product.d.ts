@@ -1,3 +1,17 @@
+type Extra = {
+	usage: unknown;
+	package: Package;
+	sold_qty: number;
+	total_reviews: number;
+};
+
+type Package = {
+	width: unknown;
+	height: unknown;
+	length: unknown;
+	weight: unknown;
+};
+
 export type Product = {
 	id: number;
 	branch_id: number;
@@ -61,18 +75,4 @@ export type Product = {
 	type_name: string;
 	location_formatted: unknown;
 	processing_status_name: unknown;
-};
-
-export type Extra = {
-	usage: unknown;
-	package: Package;
-	sold_qty: number;
-	total_reviews: number;
-};
-
-export type Package = {
-	width: unknown;
-	height: unknown;
-	length: unknown;
-	weight: unknown;
 };

@@ -83,75 +83,77 @@ const Table = <T,>({
 	});
 
 	return (
-		<table
-			className='w-full border-collapse border'
-			cellPadding={12}
-		>
-			<thead>
-				{table.getHeaderGroups().map((headerGroup) => (
-					<tr key={headerGroup.id}>
-						{(canUpdate || canDelete || canRead) && <td className='size-6 border'></td>}
+		<div className='overflow-auto'>
+			<table
+				className='w-full border-collapse border'
+				cellPadding={12}
+			>
+				<thead>
+					{table.getHeaderGroups().map((headerGroup) => (
+						<tr key={headerGroup.id}>
+							{(canUpdate || canDelete || canRead) && <td className='size-6 border'></td>}
 
-						{headerGroup.headers.map((header) => (
-							<th
-								key={header.id}
-								className='border'
-							>
-								{header.isPlaceholder
-									? null
-									: flexRender(header.column.columnDef.header, header.getContext())}
-							</th>
-						))}
-					</tr>
-				))}
-			</thead>
+							{headerGroup.headers.map((header) => (
+								<th
+									key={header.id}
+									className='border'
+								>
+									{header.isPlaceholder
+										? null
+										: flexRender(header.column.columnDef.header, header.getContext())}
+								</th>
+							))}
+						</tr>
+					))}
+				</thead>
 
-			<tbody>
-				{table.getRowModel().rows.map((row) => (
-					<tr key={row.id}>
-						<td className='size-6 border'>
-							<div className='flex items-center gap-3'>
-								{canUpdate && (
-									<PencilIcon
-										className='size-5 cursor-pointer text-primary'
-										onClick={() => {
-											onUpdate?.(row.original);
-										}}
-									/>
-								)}
+				<tbody>
+					{table.getRowModel().rows.map((row) => (
+						<tr key={row.id}>
+							<td className='size-6 border'>
+								<div className='flex items-center gap-3'>
+									{canUpdate && (
+										<PencilIcon
+											className='size-5 cursor-pointer text-primary'
+											onClick={() => {
+												onUpdate?.(row.original);
+											}}
+										/>
+									)}
 
-								{canRead && (
-									<EyeIcon
-										className='size-5 cursor-pointer text-blue-500'
-										onClick={() => {
-											onRead?.(row.original);
-										}}
-									/>
-								)}
+									{canRead && (
+										<EyeIcon
+											className='size-5 cursor-pointer text-blue-500'
+											onClick={() => {
+												onRead?.(row.original);
+											}}
+										/>
+									)}
 
-								{canDelete && (
-									<TrashIcon
-										className='size-5 cursor-pointer text-red-500'
-										onClick={() => {
-											onDelete?.(row.original);
-										}}
-									/>
-								)}
-							</div>
-						</td>
-
-						{row.getVisibleCells().map((cell) => (
-							<td
-								key={cell.id}
-								className='border'
-							>
-								{flexRender(cell.column.columnDef.cell, cell.getContext())}
+									{canDelete && (
+										<TrashIcon
+											className='size-5 cursor-pointer text-red-500'
+											onClick={() => {
+												onDelete?.(row.original);
+											}}
+										/>
+									)}
+								</div>
 							</td>
-						))}
-					</tr>
-				))}
-			</tbody>
-		</table>
+
+							{row.getVisibleCells().map((cell) => (
+								<td
+									key={cell.id}
+									className='border'
+								>
+									{flexRender(cell.column.columnDef.cell, cell.getContext())}
+								</td>
+							))}
+						</tr>
+					))}
+				</tbody>
+			</table>
+		</div>
 	);
 };
 

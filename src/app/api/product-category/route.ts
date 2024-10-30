@@ -5,7 +5,7 @@ import { NextRequest } from 'next/server';
 export const GET = async (req: NextRequest) => {
 	const response = await serverRequest({
 		req: req,
-		api: api.product,
+		api: api.productCategory,
 	});
 
 	return Response.json(response, {

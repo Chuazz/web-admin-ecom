@@ -39,7 +39,7 @@ const LoginPage = ({ searchParams }: Page) => {
 
 	return (
 		<div className='flex min-h-screen items-center justify-center bg-slate-100'>
-			<div className='relative w-96 overflow-hidden rounded-lg bg-white shadow-lg'>
+			<div className='relative mx-3 w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg'>
 				<Loading show={loginMutate.isPending} />
 
 				<div className='h-[3px] bg-blue-500' />

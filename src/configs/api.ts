@@ -1,7 +1,8 @@
 const api = {
 	login: '/login',
-	products: '/product',
+	product: '/product',
 	selectBranch: '/select-branch',
+	productCategory: '/product-category',
 };
 
 export { api };

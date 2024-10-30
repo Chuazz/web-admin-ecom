@@ -14,5 +14,7 @@ export const POST = async (req: NextRequest) => {
 		},
 	});
 
-	return Response.json(response);
+	return Response.json(response, {
+		status: response?.status,
+	});
 };

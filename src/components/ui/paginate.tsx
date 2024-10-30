@@ -14,7 +14,7 @@ const Paginate = ({ page = 1, totalPage = 1, limit = 5, onPageChange, onLimitCha
 	const t = translation();
 
 	return (
-		<div className='flex items-center justify-end gap-4'>
+		<div className='flex flex-wrap items-center justify-end gap-4'>
 			<div
 				className='cursor-pointer rounded border bg-white px-2 py-1'
 				onClick={() => {

@@ -23,11 +23,11 @@ const SideBar = () => {
 	return (
 		<div
 			className={clsx(
-				'p-3 transition-all duration-300 sm:pt-16 lg:px-3 lg:pt-3',
-				'z-10 flex h-screen flex-col gap-5 overflow-auto bg-primary sm:absolute lg:relative',
+				'p-3 pt-16 transition-all duration-300 lg:px-3 lg:pt-3',
+				'absolute z-10 flex h-screen flex-col gap-5 overflow-auto bg-primary lg:relative',
 				{
-					'sm:w-80 lg:w-80': !sidebarCollapse,
-					'sm:w-0 sm:px-0 lg:w-[62px]': sidebarCollapse,
+					'w-screen lg:w-80': !sidebarCollapse,
+					'w-0 px-0 lg:w-[62px]': sidebarCollapse,
 				},
 			)}
 		>

@@ -17,9 +17,19 @@ type Props = ComponentPropsWithoutRef<'div'> & {
 		} & RefAttributes<SVGSVGElement>
 	>;
 	content?: string;
+	rounded?: boolean;
+	outline?: boolean;
 };
 
-const Button = ({ size = 'md', schema = 'primary', leftIcon, content, ...props }: Props) => {
+const Button = ({
+	size = 'md',
+	schema = 'primary',
+	leftIcon,
+	content,
+	rounded,
+	outline,
+	...props
+}: Props) => {
 	const LeftIcon = leftIcon ? leftIcon : () => null;
 
 	const classes = useMemo(() => {
@@ -27,18 +37,30 @@ const Button = ({ size = 'md', schema = 'primary', leftIcon, content, ...props }
 		const icon: string[] = [];
 
 		const wrapper: string[] = [
-			'cursor-pointer rounded-md transition-all duration-200 hover:scale-105',
+			'cursor-pointer transition-all duration-200 hover:scale-105',
 			'hover:opacity-95 hover:shadow-md active:scale-90 select-none',
 		];
+
+		if (rounded) {
+			wrapper.push('rounded-full');
+		}
+
+		if (!rounded) {
+			wrapper.push('rounded-md');
+		}
 
 		if (size === 'md') {
 			icon.push('size-5');
 
-			wrapper.push('px-4 py-2 font-semibold');
+			wrapper.push('px-2 py-2 font-semibold');
 		}
 
 		if (schema === 'primary') {
 			wrapper.push('bg-primary text-white');
+		}
+
+		if (schema === 'gray') {
+			wrapper.push('bg-gray-500 text-white');
 		}
 
 		return {
@@ -46,7 +68,7 @@ const Button = ({ size = 'md', schema = 'primary', leftIcon, content, ...props }
 			icon: icon.join(' '),
 			wrapper: wrapper.join(' '),
 		};
-	}, [schema, size]);
+	}, [rounded, schema, size]);
 
 	return (
 		<div

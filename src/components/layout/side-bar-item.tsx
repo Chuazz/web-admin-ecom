@@ -63,7 +63,7 @@ const SideBarItem = ({ data }: { data: Option }) => {
 					'hover:bg-white hover:text-black': isChild && !active,
 					'hover:bg-blue-500 hover:text-white': isParent && !childActive,
 				})}
-				href={data.href ? appendLocale(lng, data.href) : '#'}
+				href={data.href ? appendLocale(lng, data.href) : pathname}
 				onClick={() => {
 					if (data.href) {
 						return;
