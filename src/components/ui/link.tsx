@@ -2,47 +2,48 @@
 
 import { useSearchParams } from '@/src/hooks';
 import { appendLocale } from '@/src/utils/i18n';
-import { Languages } from '@configs/i18n';
+import { languages, Languages } from '@configs/i18n';
 import clsx from 'clsx';
 import NextLink, { LinkProps } from 'next/link';
-import { useParams, usePathname } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { stringify } from 'querystring';
 import { ComponentPropsWithoutRef, PropsWithChildren, useMemo } from 'react';
 
-type Props =
-	| (LinkProps &
-			ComponentPropsWithoutRef<'a'> &
-			PropsWithChildren & {
-				params?: Record<string, string>;
-				type: 'redirect';
-			})
-	| (Omit<LinkProps, 'href'> &
-			Omit<ComponentPropsWithoutRef<'a'>, 'href'> &
-			PropsWithChildren & {
-				params?: Record<string, string | number>;
-				type: 'update';
-			});
+type Props = LinkProps &
+	ComponentPropsWithoutRef<'a'> &
+	PropsWithChildren & {
+		params?: Record<string, string>;
+		keepParam?: boolean;
+	};
 
-const Link = ({ params, children, className, ...props }: Props) => {
-	const pathname = usePathname();
+const Link = ({ params, children, className, keepParam, href, type, ...props }: Props) => {
 	const { update, ...allParams } = useSearchParams();
 
 	const pageParams = useParams<{
 		lng: Languages;
 	}>();
 
-	const href = useMemo(() => {
-		if (props.type === 'update') {
-			return pathname + '?' + stringify({ ...allParams, ...params });
+	const newHref = useMemo(() => {
+		let newParams = params;
+
+		if (keepParam) {
+			newParams = {
+				...allParams,
+				...params,
+			};
 		}
 
-		return appendLocale(pageParams.lng, props.href, params);
-	}, [allParams, pageParams.lng, params, pathname, props.href, props.type]);
+		if (languages.some((t) => href.startsWith('/' + t))) {
+			return href + (Object.keys(newParams || {}).length ? '?' + stringify(newParams) : '');
+		}
+
+		return appendLocale(pageParams.lng, href, newParams);
+	}, [allParams, keepParam, pageParams.lng, params, href]);
 
 	return (
 		<NextLink
 			className={clsx('block', className)}
-			href={href}
+			href={newHref}
 			{...props}
 		>
 			{children}

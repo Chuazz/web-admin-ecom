@@ -1,6 +1,7 @@
 'use client';
 
 import { translation } from '@configs/i18n';
+import { EyeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
 import {
 	createColumnHelper,
 	flexRender,
@@ -12,6 +13,12 @@ import { HTMLAttributes, ReactNode, useMemo } from 'react';
 type Table<T = unknown> = {
 	items: T[];
 	module: string;
+	canUpdate?: boolean;
+	canDelete?: boolean;
+	canRead?: boolean;
+	onUpdate?: (data: T) => void;
+	onRead?: (data: T) => void;
+	onDelete?: (data: T) => void;
 	fields: {
 		key: keyof T | ({} & string);
 		header?: () => ReactNode;
@@ -21,7 +28,17 @@ type Table<T = unknown> = {
 	}[];
 };
 
-const Table = <T,>({ items, module, fields = [] }: Table<T>) => {
+const Table = <T,>({
+	items,
+	module,
+	fields = [],
+	canDelete,
+	canUpdate,
+	canRead,
+	onDelete,
+	onRead,
+	onUpdate,
+}: Table<T>) => {
 	const columnHelper = useMemo(() => createColumnHelper<T>(), []);
 	const t = translation();
 
@@ -73,6 +90,8 @@ const Table = <T,>({ items, module, fields = [] }: Table<T>) => {
 			<thead>
 				{table.getHeaderGroups().map((headerGroup) => (
 					<tr key={headerGroup.id}>
+						{(canUpdate || canDelete || canRead) && <td className='size-6 border'></td>}
+
 						{headerGroup.headers.map((header) => (
 							<th
 								key={header.id}
@@ -90,6 +109,37 @@ const Table = <T,>({ items, module, fields = [] }: Table<T>) => {
 			<tbody>
 				{table.getRowModel().rows.map((row) => (
 					<tr key={row.id}>
+						<td className='size-6 border'>
+							<div className='flex items-center gap-3'>
+								{canUpdate && (
+									<PencilIcon
+										className='size-5 cursor-pointer text-primary'
+										onClick={() => {
+											onUpdate?.(row.original);
+										}}
+									/>
+								)}
+
+								{canRead && (
+									<EyeIcon
+										className='size-5 cursor-pointer text-blue-500'
+										onClick={() => {
+											onRead?.(row.original);
+										}}
+									/>
+								)}
+
+								{canDelete && (
+									<TrashIcon
+										className='size-5 cursor-pointer text-red-500'
+										onClick={() => {
+											onDelete?.(row.original);
+										}}
+									/>
+								)}
+							</div>
+						</td>
+
 						{row.getVisibleCells().map((cell) => (
 							<td
 								key={cell.id}

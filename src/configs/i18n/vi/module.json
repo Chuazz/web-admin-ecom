@@ -1,5 +1,7 @@
 {
 	"product": "Sản phẩm",
+	"product_category": "Nhóm sản phẩm",
+	"customer": "Khách hàng",
 
 	"fields": {
 		"product": {

@@ -1,7 +1,9 @@
 const routes = {
 	root: '/',
 	login: '/auth/login',
-	products: '/products',
+	product: '/product',
+	productCategory: '/product-category',
+	customer: '/customer',
 };
 
 export { routes };

@@ -1,14 +1,14 @@
 'use client';
 
+import { Image } from '@components/ui';
+import { translation } from '@configs/i18n';
 import { image, tempImage } from '@configs/image';
 import { menu } from '@configs/menu';
-import { SideBarItem } from './side-bar-item';
-import { translation } from '@configs/i18n';
-import { useSession } from 'next-auth/react';
-import { Image } from '@components/ui';
-import { useSearchParams } from 'next/navigation';
 import clsx from 'clsx';
+import { useSession } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
+import { SideBarItem } from './side-bar-item';
 
 const SideBar = () => {
 	const t = translation();
@@ -27,7 +27,7 @@ const SideBar = () => {
 				'z-10 flex h-screen flex-col gap-5 overflow-auto bg-primary sm:absolute lg:relative',
 				{
 					'sm:w-80 lg:w-80': !sidebarCollapse,
-					'sm:w-0 sm:px-0 lg:w-16': sidebarCollapse,
+					'sm:w-0 sm:px-0 lg:w-[62px]': sidebarCollapse,
 				},
 			)}
 		>
@@ -57,12 +57,14 @@ const SideBar = () => {
 
 			<div className='border-b border-b-white' />
 
-			{menu.map((item) => (
-				<SideBarItem
-					key={item.code}
-					data={item}
-				/>
-			))}
+			<div className='flex flex-col gap-2'>
+				{menu.map((item) => (
+					<SideBarItem
+						key={item.code}
+						data={item}
+					/>
+				))}
+			</div>
 		</div>
 	);
 };

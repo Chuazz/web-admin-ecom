@@ -1,22 +1,27 @@
 'use client';
 
+import { usePermission } from '@/src/hooks';
+import { useGetProducts } from '@/src/hooks/query';
 import { InputText } from '@components/form';
 import { Button, Card, Loading, Paginate, Table } from '@components/ui';
 import { translation } from '@configs/i18n';
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
-import { getProductsOptions } from './get-products';
+import { routes } from '@configs/routes';
 import { PlusIcon } from '@heroicons/react/24/solid';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 const ProductList = () => {
 	const t = translation();
+	const { has } = usePermission();
+	const router = useRouter();
+
 	const [queryParams, setQueryParams] = useState({
 		keyword: '',
 		page: 1,
 		limit: 5,
 	});
 
-	const productsQuery = useQuery(getProductsOptions(queryParams));
+	const productsQuery = useGetProducts(queryParams);
 
 	return (
 		<Card className='relative'>
@@ -45,6 +50,9 @@ const ProductList = () => {
 				<Table
 					items={productsQuery.data?.data || []}
 					module='product'
+					canRead={has('product_s.view')}
+					canUpdate={has('product_s.update')}
+					canDelete={has('product_s.delete')}
 					fields={[
 						{
 							key: 'name',
@@ -58,6 +66,9 @@ const ProductList = () => {
 							cellClassName: 'text-right',
 						},
 					]}
+					onUpdate={(value) => {
+						router.push(routes.product + '/' + value.id);
+					}}
 				/>
 			</Card.Body>
 

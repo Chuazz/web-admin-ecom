@@ -1,56 +1,68 @@
 'use client';
 
+import { useSearchParams } from '@/src/hooks';
 import { appendLocale } from '@/src/utils';
 import { Link } from '@components/ui';
 import { ChevronRightIcon } from '@heroicons/react/24/solid';
 import { Option, Page } from '@type/common';
 import clsx from 'clsx';
-import { useParams, usePathname, useSearchParams } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useParams, usePathname } from 'next/navigation';
+import { useCallback, useMemo, useState } from 'react';
 
 const SideBarItem = ({ data }: { data: Option }) => {
 	const pathname = usePathname();
 	const { lng } = useParams<Page['params']>();
 	const isParent = useMemo(() => !!data.items, [data.items]);
-	const searchParams = useSearchParams();
+	const isChild = useMemo(() => !data.items, [data.items]);
 
-	const sidebarCollapse = useMemo(
-		() => searchParams.get('sidebarCollapse') === 'true',
-		[searchParams],
+	const { sidebarCollapse } = useSearchParams({
+		sidebarCollapse: 'false',
+	});
+
+	const isSidebarCollapse = useMemo(() => sidebarCollapse === 'true', [sidebarCollapse]);
+
+	const checkActive = useCallback(
+		(item: Option) => {
+			return (
+				item.href &&
+				(pathname === appendLocale(lng, item.href) ||
+					pathname.startsWith(`${appendLocale(lng, item.href)}/`))
+			);
+		},
+		[lng, pathname],
 	);
 
-	const active = useMemo(
-		() => pathname === appendLocale(lng, data.href),
-		[data.href, lng, pathname],
-	);
-
-	const [collapsed, setCollapsed] = useState(() => {
+	const childActive = useMemo(() => {
 		if (!data.items) {
-			return true;
+			return false;
 		}
 
 		const foundActive = data.items.some((item) => {
-			return pathname === appendLocale(lng, item.href);
+			return checkActive(item);
 		});
 
-		return !foundActive;
-	});
+		return foundActive;
+	}, [checkActive, data.items]);
+
+	const active = useMemo(() => checkActive(data), [checkActive, data]);
+
+	const [collapsed, setCollapsed] = useState(!childActive);
 
 	return (
 		<div
 			className={clsx('border-b border-transparent', {
-				'mb-3 border-b-white pb-2': !collapsed,
+				'mb-1 border-b-white pb-2': !collapsed,
 			})}
 		>
 			<Link
-				type='redirect'
-				className={clsx(
-					'flex flex-nowrap items-center gap-2 rounded-lg p-2 hover:bg-white hover:text-black',
-					{
-						'bg-white text-black': active,
-						'text-white': !active,
-					},
-				)}
+				keepParam={true}
+				className={clsx('flex flex-nowrap items-center gap-2 rounded-lg p-2', {
+					'bg-blue-500 text-white hover:bg-blue-600': isParent && childActive,
+					'text-white': (isParent && !childActive) || (isChild && !active),
+					'bg-white text-black': isChild && active,
+					'hover:bg-white hover:text-black': isChild && !active,
+					'hover:bg-blue-500 hover:text-white': isParent && !childActive,
+				})}
 				href={data.href ? appendLocale(lng, data.href) : '#'}
 				onClick={() => {
 					if (data.href) {
@@ -60,24 +72,16 @@ const SideBarItem = ({ data }: { data: Option }) => {
 					setCollapsed((prev) => !prev);
 				}}
 			>
-				{data.icon && <data.icon className='size-6' />}
+				{data.icon && <data.icon className='size-5' />}
 
-				{!sidebarCollapse && (
-					<p
-						className={clsx('flex-1 text-nowrap', {
-							'font-bold': isParent,
-						})}
-					>
-						{data.label}
-					</p>
-				)}
+				{!isSidebarCollapse && <p className={clsx('flex-1 text-nowrap')}>{data.label}</p>}
 
-				{data.items && !sidebarCollapse && <ChevronRightIcon className='size-6' />}
+				{data.items && !isSidebarCollapse && <ChevronRightIcon className='size-6' />}
 			</Link>
 
 			{data.items && (
 				<div
-					className={clsx('overflow-hidden transition-all duration-200', {
+					className={clsx('flex flex-col gap-1 overflow-hidden transition-all duration-200', {
 						'h-0': collapsed,
 						'mt-2 h-auto': !collapsed,
 					})}

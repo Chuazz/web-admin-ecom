@@ -5,6 +5,7 @@ import { Login, loginWithEmailSchema, loginWithPhoneNumberSchema } from '@/src/s
 import { InputText } from '@components/form';
 import { Link, Loading } from '@components/ui';
 import { translation } from '@configs/i18n';
+import { routes } from '@configs/routes';
 import { Button } from '@headlessui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Page } from '@type/common';
@@ -101,7 +102,7 @@ const LoginPage = ({ searchParams }: Page) => {
 					</div>
 
 					<Link
-						type='update'
+						href={routes.login}
 						className='font-medium text-blue-500'
 						replace={true}
 						params={{

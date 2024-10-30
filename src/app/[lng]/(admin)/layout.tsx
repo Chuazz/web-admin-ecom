@@ -6,7 +6,7 @@ const AdminLayout = ({ children }: Layout) => {
 		<div className='flex'>
 			<SideBar />
 
-			<div className='h-screen flex-1 overflow-auto bg-slate-50'>
+			<div className='h-screen flex-1 overflow-auto bg-slate-100'>
 				<Header />
 
 				<div className='p-4'>{children}</div>

@@ -29,10 +29,7 @@ const RootPage = () => {
 				See session
 			</Button>
 
-			<Link
-				href={routes.products}
-				type='redirect'
-			>
+			<Link href={routes.product}>
 				<Button className={clsx('cursor-pointer rounded-md bg-blue-500 px-3 py-2 text-white')}>
 					Go to products
 				</Button>

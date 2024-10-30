@@ -15,7 +15,26 @@ const menu: Option[] = [
 				code: 'product',
 				label: t('module:product'),
 				icon: StopIcon,
-				href: routes.products,
+				href: routes.product,
+			},
+			{
+				code: 'product-category',
+				label: t('module:product_category'),
+				icon: StopIcon,
+				href: routes.productCategory,
+			},
+		],
+	},
+	{
+		code: 'business',
+		label: t('menu:business'),
+		icon: ArchiveBoxIcon,
+		items: [
+			{
+				code: 'customer',
+				label: t('module:customer'),
+				icon: StopIcon,
+				href: routes.customer,
 			},
 		],
 	},

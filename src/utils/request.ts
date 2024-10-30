@@ -1,6 +1,5 @@
 import { auth } from '@/auth';
 import { env } from '@configs/env';
-import { isServer } from '@tanstack/react-query';
 import { Response } from '@type/request';
 import { Session } from 'next-auth';
 import { NextRequest } from 'next/server';
@@ -92,10 +91,6 @@ const serverRequest = async <T = unknown>(props: ServerRequest): Promise<Respons
 };
 
 const clientRequest = async <T = unknown>(props: ClientRequest): Promise<Response<T> | null> => {
-	if (isServer) {
-		return null;
-	}
-
 	let url = env.BASE_API_URL + props.api;
 
 	if (props.api.includes('https://') || props.api.includes('http://')) {

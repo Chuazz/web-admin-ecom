@@ -1,4 +1,4 @@
-import { ReactQueryProvider } from '@providers/react-query-provider';
+import { ReactQueryProvider } from '@providers/index';
 import { Layout } from '@type/index';
 import { dir } from 'i18next';
 import type { Metadata } from 'next';

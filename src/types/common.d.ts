@@ -15,10 +15,11 @@ export type Option = {
 	action?: () => void;
 };
 
-export type Page<TSParams = Record<string, unknown>> = {
-	params: Record<string, string> & {
-		lng: Languages;
-	};
+export type Page<TParam = Record<string, string>, TSParams = Record<string, unknown>> = {
+	params: Record<string, string> &
+		TParam & {
+			lng: Languages;
+		};
 	searchParams: TSParams;
 };
 
