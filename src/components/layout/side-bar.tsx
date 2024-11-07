@@ -23,7 +23,7 @@ const SideBar = () => {
 	return (
 		<div
 			className={clsx(
-				'p-3 pt-16 transition-all duration-300 lg:px-3 lg:pt-3',
+				'hide-scrollbar p-3 pt-16 transition-all duration-300 lg:px-3 lg:pt-3',
 				'absolute z-10 flex h-screen flex-col gap-5 overflow-auto bg-primary lg:relative',
 				{
 					'w-screen lg:w-80': !sidebarCollapse,

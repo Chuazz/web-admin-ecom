@@ -1,19 +1,18 @@
 'use client';
 
-import { usePermission } from '@/src/hooks';
+import { usePermission, useRouter } from '@/src/hooks';
 import { useGetProducts } from '@/src/hooks/query';
 import { InputText } from '@components/form';
 import { Button, Card, Loading, Paginate, Table } from '@components/ui';
 import { translation } from '@configs/i18n';
 import { routes } from '@configs/routes';
 import { PlusIcon } from '@heroicons/react/24/solid';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const ProductList = () => {
 	const t = translation();
 	const { has } = usePermission();
-	const router = useRouter();
+	const { router } = useRouter();
 
 	const [queryParams, setQueryParams] = useState({
 		keyword: '',
@@ -43,6 +42,7 @@ const ProductList = () => {
 				<Button
 					leftIcon={PlusIcon}
 					content='Thêm mới'
+					onClick={() => {}}
 				/>
 			</Card.Header>
 
@@ -67,7 +67,10 @@ const ProductList = () => {
 						},
 					]}
 					onUpdate={(value) => {
-						router.push(routes.product + '/' + value.id);
+						router.redirect({
+							keepParams: true,
+							href: routes.product + '/' + value.id,
+						});
 					}}
 				/>
 			</Card.Body>

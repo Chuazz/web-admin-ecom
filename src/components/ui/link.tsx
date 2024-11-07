@@ -1,12 +1,12 @@
 'use client';
 
-import { useSearchParams } from '@/src/hooks';
+import { useRouter } from '@/src/hooks';
+import { stringifyParams } from '@/src/utils';
 import { appendLocale } from '@/src/utils/i18n';
 import { languages, Languages } from '@configs/i18n';
 import clsx from 'clsx';
 import NextLink, { LinkProps } from 'next/link';
 import { useParams } from 'next/navigation';
-import { stringify } from 'querystring';
 import { ComponentPropsWithoutRef, PropsWithChildren, useMemo } from 'react';
 
 type Props = LinkProps &
@@ -17,7 +17,7 @@ type Props = LinkProps &
 	};
 
 const Link = ({ params, children, className, keepParam, href, type, ...props }: Props) => {
-	const { update, ...allParams } = useSearchParams();
+	const { router, ...allParams } = useRouter();
 
 	const pageParams = useParams<{
 		lng: Languages;
@@ -34,7 +34,7 @@ const Link = ({ params, children, className, keepParam, href, type, ...props }: 
 		}
 
 		if (languages.some((t) => href.startsWith('/' + t))) {
-			return href + (Object.keys(newParams || {}).length ? '?' + stringify(newParams) : '');
+			return href + stringifyParams(newParams);
 		}
 
 		return appendLocale(pageParams.lng, href, newParams);

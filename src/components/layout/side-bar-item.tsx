@@ -1,6 +1,6 @@
 'use client';
 
-import { useSearchParams } from '@/src/hooks';
+import { useRouter } from '@/src/hooks';
 import { appendLocale } from '@/src/utils';
 import { Link } from '@components/ui';
 import { ChevronRightIcon } from '@heroicons/react/24/solid';
@@ -15,7 +15,7 @@ const SideBarItem = ({ data }: { data: Option }) => {
 	const isParent = useMemo(() => !!data.items, [data.items]);
 	const isChild = useMemo(() => !data.items, [data.items]);
 
-	const { sidebarCollapse } = useSearchParams({
+	const { sidebarCollapse } = useRouter({
 		sidebarCollapse: 'false',
 	});
 

@@ -6,16 +6,14 @@ import { InputText } from '@components/form';
 import { Button, Card, Loading, Paginate, Table } from '@components/ui';
 import { translation } from '@configs/i18n';
 import { PlusIcon } from '@heroicons/react/24/solid';
-import { ProductCategory } from '@type/data';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-type Props = {
-	onUpdate: (data: ProductCategory) => void;
-};
-
-const ProductCategoryList = ({ onUpdate }: Props) => {
+const ProductCategoryList = () => {
 	const t = translation();
 	const { has } = usePermission();
+	const pathname = usePathname();
+	const router = useRouter();
 
 	const [queryParams, setQueryParams] = useState({
 		keyword: '',
@@ -63,7 +61,9 @@ const ProductCategoryList = ({ onUpdate }: Props) => {
 							key: 'name',
 						},
 					]}
-					onUpdate={onUpdate}
+					onUpdate={(data) => {
+						router.push(pathname + '/' + data.id);
+					}}
 				/>
 			</Card.Body>
 

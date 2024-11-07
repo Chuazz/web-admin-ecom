@@ -85,18 +85,20 @@ const Table = <T,>({
 	return (
 		<div className='overflow-auto'>
 			<table
-				className='w-full border-collapse border'
+				className='w-full border-collapse'
 				cellPadding={12}
 			>
 				<thead>
 					{table.getHeaderGroups().map((headerGroup) => (
 						<tr key={headerGroup.id}>
-							{(canUpdate || canDelete || canRead) && <td className='size-6 border'></td>}
+							{(canUpdate || canDelete || canRead) && (
+								<th className='w-9 border bg-primary'></th>
+							)}
 
 							{headerGroup.headers.map((header) => (
 								<th
 									key={header.id}
-									className='border'
+									className='border bg-primary text-white'
 								>
 									{header.isPlaceholder
 										? null
@@ -110,8 +112,8 @@ const Table = <T,>({
 				<tbody>
 					{table.getRowModel().rows.map((row) => (
 						<tr key={row.id}>
-							<td className='size-6 border'>
-								<div className='flex items-center gap-3'>
+							<td className='border'>
+								<div className='flex w-fit items-center gap-3'>
 									{canUpdate && (
 										<PencilIcon
 											className='size-5 cursor-pointer text-primary'
