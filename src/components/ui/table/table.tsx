@@ -9,9 +9,12 @@ import {
 	useReactTable,
 } from '@tanstack/react-table';
 import { HTMLAttributes, ReactNode, useMemo } from 'react';
+import { Button } from '../button';
+import { Loading } from '../loading';
 
 type Table<T = unknown> = {
 	items: T[];
+	isLoading?: boolean;
 	module: string;
 	canUpdate?: boolean;
 	canDelete?: boolean;
@@ -32,6 +35,7 @@ const Table = <T,>({
 	items,
 	module,
 	fields = [],
+	isLoading = false,
 	canDelete,
 	canUpdate,
 	canRead,
@@ -84,9 +88,11 @@ const Table = <T,>({
 
 	return (
 		<div className='overflow-auto'>
+			<Loading show={isLoading} />
+
 			<table
 				className='w-full border-collapse'
-				cellPadding={12}
+				cellPadding={8}
 			>
 				<thead>
 					{table.getHeaderGroups().map((headerGroup) => (
@@ -113,10 +119,11 @@ const Table = <T,>({
 					{table.getRowModel().rows.map((row) => (
 						<tr key={row.id}>
 							<td className='border'>
-								<div className='flex w-fit items-center gap-3'>
+								<div className='flex w-fit items-center'>
 									{canUpdate && (
-										<PencilIcon
-											className='size-5 cursor-pointer text-primary'
+										<Button
+											leftIcon={PencilIcon}
+											filled={false}
 											onClick={() => {
 												onUpdate?.(row.original);
 											}}
@@ -124,8 +131,10 @@ const Table = <T,>({
 									)}
 
 									{canRead && (
-										<EyeIcon
-											className='size-5 cursor-pointer text-blue-500'
+										<Button
+											schema='blue'
+											leftIcon={EyeIcon}
+											filled={false}
 											onClick={() => {
 												onRead?.(row.original);
 											}}
@@ -133,8 +142,10 @@ const Table = <T,>({
 									)}
 
 									{canDelete && (
-										<TrashIcon
-											className='size-5 cursor-pointer text-red-500'
+										<Button
+											schema='red'
+											leftIcon={TrashIcon}
+											filled={false}
 											onClick={() => {
 												onDelete?.(row.original);
 											}}

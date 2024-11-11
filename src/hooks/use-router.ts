@@ -7,7 +7,7 @@ import { useMemo } from 'react';
 import { stringifyParams } from '../utils';
 
 type UpdateSearchParams<T> = {
-	href: string;
+	href?: string;
 	params?: Record<string, string | number | boolean>;
 	update?: Record<keyof T, string>;
 	action?: 'replace' | 'push';
@@ -23,10 +23,12 @@ const useRouter = <T>(defaultValue: T = {} as T) => {
 		const result: Record<string, string> = {};
 
 		searchParams.forEach((value, key) => {
-			result[key] = value;
+			if (value) {
+				result[key] = value;
+			}
 		});
 
-		return { ...defaultValue, ...result };
+		return { ...defaultValue, ...result } as T;
 	}, [defaultValue, searchParams]);
 
 	return {
@@ -41,7 +43,7 @@ const useRouter = <T>(defaultValue: T = {} as T) => {
 				params,
 				action = 'push',
 				keepParams,
-				href,
+				href = pathname,
 			}: UpdateSearchParams<T>) => {
 				const urlSearchParams = new URLSearchParams(searchParams.toString());
 				const previousParams: Record<string, string> = {};

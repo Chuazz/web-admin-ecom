@@ -1,11 +1,11 @@
 'use client';
 
-import { ProductList } from './product-list';
+import { ProductAcademyList } from './product-academy-list';
 
 const ProductPage = () => {
 	return (
 		<>
-			<ProductList />
+			<ProductAcademyList />
 		</>
 	);
 };

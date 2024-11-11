@@ -8,7 +8,7 @@ import { useParams, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { Login } from '../schemas/login-schema';
 import { appendLocale } from '../utils';
-import { clientRequest } from '../utils/request';
+import { request } from '../utils/request';
 import { useSelectBranch } from './use-select-branch';
 
 const useLogin = () => {
@@ -19,7 +19,7 @@ const useLogin = () => {
 
 	return useMutation<Response<LoginResponse> | null, Response, Login>({
 		mutationFn: async (data) => {
-			const response = await clientRequest<LoginResponse>({
+			const response = await request<LoginResponse>({
 				api: api.login,
 				options: {
 					method: 'POST',

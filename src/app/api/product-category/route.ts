@@ -1,9 +1,9 @@
-import { serverRequest } from '@/src/utils';
+import { request } from '@/src/utils';
 import { api } from '@configs/api';
 import { NextRequest } from 'next/server';
 
 export const GET = async (req: NextRequest) => {
-	const response = await serverRequest({
+	const response = await request({
 		req: req,
 		api: api.productCategory,
 	});

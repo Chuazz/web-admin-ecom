@@ -1,13 +1,13 @@
 import { api } from '@configs/api';
+import { env } from '@configs/env';
 import { useMutation } from '@tanstack/react-query';
 import { Response, SelectBranchResponse } from '@type/index';
-import { clientRequest } from '../utils';
-import { env } from '@configs/env';
+import { request } from '../utils';
 
 const useSelectBranch = () => {
 	return useMutation<Response<SelectBranchResponse> | null, Response, void>({
 		mutationFn: async () => {
-			const response = await clientRequest<SelectBranchResponse>({
+			const response = await request<SelectBranchResponse>({
 				api: api.selectBranch,
 				options: {
 					method: 'POST',

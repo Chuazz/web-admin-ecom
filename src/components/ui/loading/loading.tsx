@@ -10,7 +10,7 @@ type LoadingProps = {
 	onTop?: boolean;
 };
 
-const Loading = ({ size = 64, show = true, lineSize = 5, onTop }: LoadingProps) => {
+const Loading = ({ size = 50, show = true, lineSize = 4, onTop }: LoadingProps) => {
 	return (
 		show && (
 			<div

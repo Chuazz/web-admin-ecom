@@ -1,9 +1,9 @@
 'use client';
 
-import { usePermission } from '@/src/hooks';
 import { useGetProductCategories } from '@/src/hooks/query/product-category';
+import { usePermission } from '@/src/hooks/use-permission';
 import { InputText } from '@components/form';
-import { Button, Card, Loading, Paginate, Table } from '@components/ui';
+import { Button, Card, Paginate, Table } from '@components/ui';
 import { translation } from '@configs/i18n';
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { usePathname, useRouter } from 'next/navigation';
@@ -25,7 +25,7 @@ const ProductCategoryList = () => {
 
 	return (
 		<Card className='relative'>
-			<Loading show={productCategoriesQuery.isFetching || productCategoriesQuery.isLoading} />
+			{/* <Loading show={productCategoriesQuery.isFetching || productCategoriesQuery.isLoading} /> */}
 
 			<Card.Header className='flex items-center justify-between'>
 				<InputText

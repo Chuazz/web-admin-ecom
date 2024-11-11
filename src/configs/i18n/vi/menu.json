@@ -1,4 +1,10 @@
 {
+	"vi": "Trang chủ",
 	"master_data": "Dữ liệu nguồn",
-	"business": "Kinh doanh"
+	"business": "Kinh doanh",
+	"commodity_industry": "Ngành hàng",
+	"product_shop": "Sản phẩm - TMĐT",
+	"product_academy": "Sản phẩm đào tạo",
+	"product_category": "Nhóm sản phẩm",
+	"dashboard": "Thống kê"
 }

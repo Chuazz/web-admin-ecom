@@ -1,8 +1,11 @@
+import { Loading } from '@components/ui';
 import { ReactQueryProvider } from '@providers/index';
 import { Layout } from '@type/index';
 import { dir } from 'i18next';
 import type { Metadata } from 'next';
 import { SessionProvider } from 'next-auth/react';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
+import { Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';
 import './globals.css';
 
@@ -19,13 +22,15 @@ const RootLayout = ({ children, params }: Layout) => {
 			<head />
 
 			<body>
-				<SessionProvider>
+				<NuqsAdapter>
 					<ReactQueryProvider>
-						{children}
+						<SessionProvider>
+							<Suspense fallback={<Loading show={true} />}>{children}</Suspense>
 
-						<Toaster />
+							<Toaster />
+						</SessionProvider>
 					</ReactQueryProvider>
-				</SessionProvider>
+				</NuqsAdapter>
 			</body>
 		</html>
 	);

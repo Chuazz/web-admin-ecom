@@ -15,7 +15,7 @@ export type Option = {
 	action?: () => void;
 };
 
-export type Page<TParam = Record<string, string>, TSParams = Record<string, unknown>> = {
+export type Page<TParam = Record<string, string>, TSParams = Record<string, string>> = {
 	params: Record<string, string> &
 		TParam & {
 			lng: Languages;

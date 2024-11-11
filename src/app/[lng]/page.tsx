@@ -29,9 +29,12 @@ const RootPage = () => {
 				See session
 			</Button>
 
-			<Link href={routes.product}>
+			<Link
+				href={routes.dashboard}
+				keepParam={true}
+			>
 				<Button className={clsx('cursor-pointer rounded-md bg-blue-500 px-3 py-2 text-white')}>
-					Go to products
+					Dashboard page
 				</Button>
 			</Link>
 		</div>

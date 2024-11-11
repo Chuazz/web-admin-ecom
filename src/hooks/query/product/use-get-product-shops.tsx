@@ -1,16 +1,16 @@
-import { clientRequest } from '@/src/utils';
+import { request } from '@/src/utils';
+import { api } from '@configs/api';
 import { queryKey } from '@configs/query-key';
-import { routes } from '@configs/routes';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { Product } from '@type/data';
 
-const useGetProducts = (params: Record<string, string | number>) => {
+const useGetProductShops = (params: Record<string, string | number | null>) => {
 	return useQuery({
 		queryKey: queryKey.products.list(params),
 		placeholderData: keepPreviousData,
 		queryFn: async () => {
-			const response = await clientRequest<Product[]>({
-				api: routes.product,
+			const response = await request<Product[]>({
+				api: api.productShop,
 				options: {
 					params,
 				},
@@ -21,4 +21,4 @@ const useGetProducts = (params: Record<string, string | number>) => {
 	});
 };
 
-export { useGetProducts };
+export { useGetProductShops };

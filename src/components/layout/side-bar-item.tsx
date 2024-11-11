@@ -1,12 +1,12 @@
 'use client';
 
-import { useRouter } from '@/src/hooks';
 import { appendLocale } from '@/src/utils';
 import { Link } from '@components/ui';
 import { ChevronRightIcon } from '@heroicons/react/24/solid';
 import { Option, Page } from '@type/common';
 import clsx from 'clsx';
 import { useParams, usePathname } from 'next/navigation';
+import { parseAsBoolean, useQueryState } from 'nuqs';
 import { useCallback, useMemo, useState } from 'react';
 
 const SideBarItem = ({ data }: { data: Option }) => {
@@ -14,12 +14,7 @@ const SideBarItem = ({ data }: { data: Option }) => {
 	const { lng } = useParams<Page['params']>();
 	const isParent = useMemo(() => !!data.items, [data.items]);
 	const isChild = useMemo(() => !data.items, [data.items]);
-
-	const { sidebarCollapse } = useRouter({
-		sidebarCollapse: 'false',
-	});
-
-	const isSidebarCollapse = useMemo(() => sidebarCollapse === 'true', [sidebarCollapse]);
+	const [sidebarCollapse] = useQueryState('sidebarCollapse', parseAsBoolean.withDefault(false));
 
 	const checkActive = useCallback(
 		(item: Option) => {
@@ -55,7 +50,6 @@ const SideBarItem = ({ data }: { data: Option }) => {
 			})}
 		>
 			<Link
-				keepParam={true}
 				className={clsx('flex flex-nowrap items-center gap-2 rounded-lg p-2', {
 					'bg-blue-500 text-white hover:bg-blue-600': isParent && childActive,
 					'text-white': (isParent && !childActive) || (isChild && !active),
@@ -74,9 +68,9 @@ const SideBarItem = ({ data }: { data: Option }) => {
 			>
 				{data.icon && <data.icon className='size-5' />}
 
-				{!isSidebarCollapse && <p className={clsx('flex-1 text-nowrap')}>{data.label}</p>}
+				{!sidebarCollapse && <p className={clsx('flex-1 text-nowrap')}>{data.label}</p>}
 
-				{data.items && !isSidebarCollapse && <ChevronRightIcon className='size-6' />}
+				{data.items && !sidebarCollapse && <ChevronRightIcon className='size-6' />}
 			</Link>
 
 			{data.items && (

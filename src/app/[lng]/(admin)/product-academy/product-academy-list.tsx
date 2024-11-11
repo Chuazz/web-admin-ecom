@@ -9,7 +9,7 @@ import { routes } from '@configs/routes';
 import { PlusIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 
-const ProductList = () => {
+const ProductAcademyList = () => {
 	const t = translation();
 	const { has } = usePermission();
 	const { router } = useRouter();
@@ -69,7 +69,7 @@ const ProductList = () => {
 					onUpdate={(value) => {
 						router.redirect({
 							keepParams: true,
-							href: routes.product + '/' + value.id,
+							href: routes.productAcademy + '/' + value.id,
 						});
 					}}
 				/>
@@ -98,4 +98,4 @@ const ProductList = () => {
 	);
 };
 
-export { ProductList };
+export { ProductAcademyList };

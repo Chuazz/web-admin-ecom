@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { FormEvent, useCallback } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-type InputTextProps = {
+type Props = {
 	label?: string;
 	placeholder?: string;
 	value?: string;
@@ -15,15 +15,7 @@ type InputTextProps = {
 	onChange?: (value: string) => void;
 };
 
-const InputText = ({
-	label,
-	placeholder,
-	value,
-	password,
-	message,
-	debounce,
-	onChange,
-}: InputTextProps) => {
+const InputText = ({ label, placeholder, value, password, message, debounce, onChange }: Props) => {
 	const handleOnChange = useCallback(
 		(e: FormEvent<HTMLInputElement>) => {
 			const target = e.target as HTMLInputElement;
@@ -46,8 +38,8 @@ const InputText = ({
 				value={value}
 				type={password ? 'password' : 'text'}
 				className={clsx(
-					'mt-1 block w-full rounded-md border border-gray-300 px-3 py-1.5',
-					'focus:outline-none data-[focus]:outline-1 data-[focus]:-outline-offset-2 data-[focus]:outline-black/25',
+					'mt-1 block w-full rounded-md border border-gray-300 px-3 py-2',
+					'data-[focus]:outline-none data-[focus]:outline-1 data-[focus]:-outline-offset-2 data-[focus]:outline-black/25',
 				)}
 				onChange={(e) => {
 					if (debounce) {

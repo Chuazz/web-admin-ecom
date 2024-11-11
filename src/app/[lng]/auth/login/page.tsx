@@ -1,6 +1,6 @@
 'use client';
 
-import { useLogin } from '@/src/hooks';
+import { useLogin } from '@/src/hooks/use-login';
 import { Login, loginWithEmailSchema, loginWithPhoneNumberSchema } from '@/src/schemas';
 import { InputText } from '@components/form';
 import { Link, Loading } from '@components/ui';

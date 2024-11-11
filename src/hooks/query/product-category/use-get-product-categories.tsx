@@ -1,4 +1,4 @@
-import { clientRequest } from '@/src/utils';
+import { request } from '@/src/utils';
 import { queryKey } from '@configs/query-key';
 import { routes } from '@configs/routes';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
@@ -9,7 +9,7 @@ const useGetProductCategories = (params: Record<string, string | number>) => {
 		queryKey: queryKey.productCategories.list(params),
 		placeholderData: keepPreviousData,
 		queryFn: async () => {
-			const response = await clientRequest<ProductCategory[]>({
+			const response = await request<ProductCategory[]>({
 				api: routes.productCategory,
 				options: {
 					params,

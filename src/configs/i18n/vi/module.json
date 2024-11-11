@@ -2,6 +2,7 @@
 	"product": "Sản phẩm",
 	"product_category": "Nhóm sản phẩm",
 	"customer": "Khách hàng",
+	"product_industry": "Loại sản phẩm",
 
 	"fields": {
 		"product": {

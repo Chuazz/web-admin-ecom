@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from '@/src/hooks';
+import { useRouter } from '@/src/hooks/use-router';
 import { stringifyParams } from '@/src/utils';
 import { appendLocale } from '@/src/utils/i18n';
 import { languages, Languages } from '@configs/i18n';
@@ -24,7 +24,7 @@ const Link = ({ params, children, className, keepParam, href, type, ...props }: 
 	}>();
 
 	const newHref = useMemo(() => {
-		let newParams = params;
+		let newParams = params || {};
 
 		if (keepParam) {
 			newParams = {
@@ -33,7 +33,13 @@ const Link = ({ params, children, className, keepParam, href, type, ...props }: 
 			};
 		}
 
-		if (languages.some((t) => href.startsWith('/' + t))) {
+		Object.keys(newParams).forEach((key) => {
+			if (!newParams[key]) {
+				delete newParams[key];
+			}
+		});
+
+		if (languages.some((t) => href?.startsWith('/' + t))) {
 			return href + stringifyParams(newParams);
 		}
 

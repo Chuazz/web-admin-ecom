@@ -1,4 +1,4 @@
-import { Header, SideBar } from '@components/layout';
+import { BreadCrumb, Header, SideBar } from '@components/layout';
 import { Layout } from '@type/index';
 
 const AdminLayout = ({ children }: Layout) => {
@@ -9,7 +9,11 @@ const AdminLayout = ({ children }: Layout) => {
 			<div className='h-screen flex-1 overflow-auto bg-slate-100'>
 				<Header />
 
-				<div className='p-4'>{children}</div>
+				<div className='p-4'>
+					<BreadCrumb />
+
+					{children}
+				</div>
 			</div>
 		</div>
 	);

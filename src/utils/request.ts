@@ -1,7 +1,9 @@
 import { auth } from '@/auth';
 import { env } from '@configs/env';
+import { isServer } from '@tanstack/react-query';
 import { Response } from '@type/request';
 import { Session } from 'next-auth';
+import { getSession } from 'next-auth/react';
 import { NextRequest } from 'next/server';
 import { stringify } from 'querystring';
 import toast from 'react-hot-toast';
@@ -11,28 +13,23 @@ type Request = {
 	session?: Session | null;
 	options?: {
 		method?: 'POST' | 'GET' | 'DELETE' | 'PUT';
-		params?: Record<string, string | number | boolean>;
+		params?: Record<string, string | number | boolean | null>;
 		body?: object;
 	};
+	req?: NextRequest;
 };
 
-type ServerRequest = Omit<Request, 'options'> & {
-	options?: Omit<Request['options'], 'params'>;
-	req: NextRequest;
-};
-
-type ClientRequest = Omit<Request, 'session'>;
-
-const request = async <T>({ api, options: _options, session }: Request) => {
+const handleRequest = async <T>({ api, options: _options, session }: Request) => {
 	const options: RequestInit = {
 		method: _options?.method || 'GET',
 		body: _options?.body ? JSON.stringify(_options.body) : undefined,
 		headers: {
-			withCredentials: 'true',
-			credentials: 'include',
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
-			Authorization: 'Bearer ' + session?.user.access_token,
+			...(_options?.method && { withCredentials: 'true', credentials: 'include' }),
+			...(session?.user.access_token && {
+				Authorization: 'Bearer ' + session.user.access_token,
+			}),
 		},
 	};
 
@@ -63,22 +60,30 @@ const request = async <T>({ api, options: _options, session }: Request) => {
 	return { data, response };
 };
 
-const serverRequest = async <T = unknown>(props: ServerRequest): Promise<Response<T> | null> => {
-	const session = await auth();
+const request = async <T = unknown>(props: Request): Promise<Response<T> | null> => {
+	let session: Session | null = null;
 
-	const params: Record<string, string> = {};
+	if (isServer) {
+		session = await auth();
+	} else {
+		session = await getSession();
+	}
 
-	let url = env.ECOM_BASE_URL + props.api;
+	const params: Record<string, string | number | boolean | null> = props?.options?.params || {};
+
+	let url = (isServer ? env.ECOM_BASE_URL : env.BASE_API_URL) + props.api;
 
 	if (props.api.includes('https://') || props.api.includes('http://')) {
 		url = props.api;
 	}
 
-	props?.req?.nextUrl?.searchParams.forEach((value, key) => {
-		params[key] = value;
-	});
+	if (isServer) {
+		props?.req?.nextUrl?.searchParams.forEach((value, key) => {
+			params[key] = value;
+		});
+	}
 
-	const result = await request<T>({
+	const result = await handleRequest<T>({
 		session,
 		api: url,
 		options: {
@@ -87,30 +92,17 @@ const serverRequest = async <T = unknown>(props: ServerRequest): Promise<Respons
 		},
 	});
 
-	return result.data;
-};
+	if (!isServer && !result.response.ok && result?.data?.message) {
+		if (props.options?.method === 'GET') {
+			toast.error(result.data.message);
 
-const clientRequest = async <T = unknown>(props: ClientRequest): Promise<Response<T> | null> => {
-	let url = env.BASE_API_URL + props.api;
+			return null;
+		}
 
-	if (props.api.includes('https://') || props.api.includes('http://')) {
-		url = props.api;
-	}
-
-	const result = await request<T>({
-		...props,
-		api: url,
-	});
-
-	if (!result.response.ok && result?.data?.message) {
-		toast.error(result.data.message);
-
-		// await signOut({
-		// 	redirect: true,
-		// });
+		throw result.data;
 	}
 
 	return result.data;
 };
 
-export { clientRequest, serverRequest };
+export { request };

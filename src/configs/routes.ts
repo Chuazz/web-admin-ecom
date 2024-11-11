@@ -1,8 +1,10 @@
 const routes = {
 	root: '/',
 	login: '/auth/login',
-	product: '/product',
+	productShop: '/product-shop',
+	productAcademy: '/product-academy',
 	productCategory: '/product-category',
+	dashboard: '/dashboard',
 	customer: '/customer',
 };
 

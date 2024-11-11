@@ -1,6 +1,7 @@
 const api = {
 	login: '/login',
-	product: '/product',
+	productShop: '/product-shop',
+	productAcademy: '/product-academy',
 	selectBranch: '/select-branch',
 	productCategory: '/product-category',
 };
